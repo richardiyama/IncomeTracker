@@ -4,8 +4,14 @@ import Todo from './Todo';
 
 const App = () => {
 
-  const[ input, setInput] =  useState('')
-  const[todos, setTodos] =  useState([])
+  const[ description, setDescription] =  useState('')
+  const[amount, setAmount] =  useState(0)
+  const[gigs,setGigs] = useState([
+    {
+      description: 'Freelance Job with Richie',
+      amount:500.00
+    }
+  ])
 
   const addTodo = () =>{
     setTodos([input,...todos]);
@@ -15,22 +21,24 @@ const App = () => {
     return (
       <SafeAreaView>
         <View>
-          <Text style={styles.titleText}>Let's build a React Native App in One Day 🚀🚀🚀 </Text>
+          <Text style={styles.titleText}>Let's build a React Native App for Freelance Devs to Track Income 🚀🚀🚀 </Text>
         </View>
-        <ScrollView>
-
-        {todos.map(todo =>(
-         <Todo title={todo}/>
-        ))}
-      
-        </ScrollView>
+        
         
         <TextInput
         style={styles.todoInput}
-        value={input}
-        onChangeText ={text => setInput(text)}
+        value={description}
+        placeholder='Enter a description'
+        onChangeText ={text => setDescription(text)}
         />
-        <Button title='Add TODO' onPress={addTodo}/>
+
+        <TextInput
+        style={styles.todoInput}
+        value={amount}
+        keyboardType='numeric'
+        onChangeText ={text => setAmount(text)}
+        />
+        {/*<Button title='Add TODO' onPress={addTodo}/>*/}
       </SafeAreaView>
     );
 };
