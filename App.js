@@ -11,10 +11,13 @@ const App = () => {
   const[ description, setDescription] =  useState('')
   const[amount, setAmount] =  useState('')
   const[total, setTotal] = useState(0)
+  const[labels,setLabels] = useState([])
+  const[dataPoints,setDataPoints] = useState([])
   const[gigs,setGigs] = useState([
     {
       description: 'Freelance Job with Richie',
-      amount:500.00
+      amount:500,
+      timestamp: new Date()
     }
   ]);
 
@@ -26,12 +29,15 @@ const App = () => {
   const addGig = () =>{
     setGigs([...gigs,{
       description: description,
-      amount: amount
+      amount: amount,
+      timestamp: new Date()
     }]);
     setDescription('');
     setAmount('');
 
   }
+
+  
     return (
       <SafeAreaView>
         <View>
@@ -41,16 +47,13 @@ const App = () => {
   <Text>Bezier Line Chart</Text>
   <LineChart
     data={{
-      labels: ["January", "February", "March", "April", "May", "June"],
+      labels: [new Date(),"Tomorrow"],
       datasets: [
         {
           data: [
+            gigs[0].amount,
             Math.random() * 100,
-            Math.random() * 100,
-            Math.random() * 100,
-            Math.random() * 100,
-            Math.random() * 100,
-            Math.random() * 100
+           
           ]
         }
       ]
@@ -58,13 +61,13 @@ const App = () => {
     width={Dimensions.get("window").width} // from react-native
     height={220}
     yAxisLabel="$"
-    yAxisSuffix="k"
+    //yAxisSuffix="k"
     yAxisInterval={1} // optional, defaults to 1
     chartConfig={{
       backgroundColor: "#e26a00",
-      backgroundGradientFrom: "#fb8c00",
-      backgroundGradientTo: "#ffa726",
-      decimalPlaces: 2, // optional, defaults to 2dp
+      backgroundGradientFrom: "green",
+      backgroundGradientTo: "green",
+      decimalPlaces: 1, // optional, defaults to 2dp
       color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
       labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
       style: {
