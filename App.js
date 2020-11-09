@@ -5,14 +5,19 @@ import {
   BarChart,
   LineChart
 } from "react-native-chart-kit";
+import moment from 'moment';
 
 const App = () => {
 
   const[ description, setDescription] =  useState('')
   const[amount, setAmount] =  useState('')
   const[total, setTotal] = useState(0)
-  const[labels,setLabels] = useState([])
-  const[dataPoints,setDataPoints] = useState([])
+  const[data,setData] = useState([
+    
+   {[moment()]: 2000},
+    {[moment().subtract(1, 'days')]: 2500},
+  ])
+  
   const[gigs,setGigs] = useState([
     {
       description: 'Freelance Job with Richie',
@@ -21,6 +26,7 @@ const App = () => {
     }
   ]);
 
+  console.log(data);
   useEffect(() => {
     setTotal(gigs.reduce((total,gig) =>total + Number(gig.amount), 0));
    
@@ -48,12 +54,11 @@ const App = () => {
   <LineChart
     data={{
       labels: [new Date(),"Tomorrow"],
-      datasets: [
+      datasets:[
         {
-          data: [
-            gigs[0].amount,
+          data:[
             Math.random() * 100,
-           
+            Math.random() * 100,
           ]
         }
       ]
@@ -67,7 +72,7 @@ const App = () => {
       backgroundColor: "#e26a00",
       backgroundGradientFrom: "green",
       backgroundGradientTo: "green",
-      decimalPlaces: 1, // optional, defaults to 2dp
+      decimalPlaces:null, // optional, defaults to 2dp
       color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
       labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
       style: {
