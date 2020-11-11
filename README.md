@@ -3,13 +3,13 @@ An Income Tracker Mobile App built with React Native
 
 <img src="https://github.com/richardiyama/IncomeTracker/blob/master/assets/income.JPG" height="400" />
 
-#Start the App
+# Start the App
 run expo start:web to run the App on a Web Browser
 
-#Expo DevTools
+# Expo DevTools
 Expo DevTool is runing on this url:http://localhost:19002/
 
-#Run on IOS & Android
+# Run on IOS & Android
 Download expo client from App Store or Google Store.
 And then on Expo DevTools runing on this url:http://localhost:19002/
 Scan the Qrcode to test on IOS and Android.
