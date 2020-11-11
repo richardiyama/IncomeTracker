@@ -13,11 +13,32 @@ const App = () => {
   const[amount, setAmount] =  useState('')
   const[total, setTotal] = useState(0)
   const[data,setData] = useState([
-    
-   {[moment()]: 2000},
-    {[moment().subtract(1, 'days')]: 2500},
-  ])
   
+   {date: moment().format('LL'), amount: 2000},
+    {date:moment().subtract(1, 'days').format('LL'), amount: 2500},
+    {date:moment().subtract(1, 'days').format('LL'), amount: 3500},
+    {date:moment().subtract(1, 'days').format('LL'), amount: 2500},
+    {date:moment().subtract(1, 'days').format('LL'), amount: 3500},
+    {date:moment().subtract(7, 'days').format('LL'), amount: 3500},
+    {date:moment().subtract(6, 'days').format('LL'), amount: 3500},
+    {date:moment().subtract(5, 'days').format('LL'), amount: 3500},
+    {date:moment().subtract(4, 'days').format('LL'), amount: 3500},
+    {date:moment().subtract(3, 'days').format('LL'), amount: 4500},
+    {date:moment().subtract(2, 'days').format('LL'), amount: 5500},
+    {date:moment().subtract(2, 'days').format('LL'), amount: 5500},
+  ])
+  const[transformedData, setTransformedData] = useState([]);
+
+  useEffect(() => {
+  setTransformedData(transformData(groupBy(data,'date')));
+  
+  }, [data])
+  const groupBy = (array,key) =>
+  array.reduce((rv,x) =>{
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+},{});
+
   const[gigs,setGigs] = useState([
     {
       description: 'Freelance Job with Richie',
@@ -26,7 +47,30 @@ const App = () => {
     }
   ]);
 
+  const getDates = () => transformedData.map(pair => pair.date)
+  const getAmounts = () => transformedData.map(pair => pair.amount)
+
+  const transformData = (groupedData) => {
+    const transformedArray = [];
+    Object.entries(groupedData).forEach(entry => {
+      const total = entry[1].reduce((total,pair) => total += pair.amount,0)
+      transformedArray.push({date: moment(entry[0]).format('MM/DD'), amount: total})
+    });
+
+    const sortedArray = transformedArray.sort((a,b) => moment(a['date']).diff(b['date']))
+
+    return sortedArray;
+  }
+    
+  
+  
+
   console.log(data);
+  console.log(getDates());
+  console.log(getAmounts());
+  console.log(Object.entries(groupBy(data,'date')));
+  console.log(transformData(groupBy(data,'date')));
+
   useEffect(() => {
     setTotal(gigs.reduce((total,gig) =>total + Number(gig.amount), 0));
    
@@ -35,9 +79,16 @@ const App = () => {
   const addGig = () =>{
     setGigs([...gigs,{
       description: description,
-      amount: amount,
-      timestamp: new Date()
+      amount: amount
     }]);
+
+    setData([
+      ...data,
+      {
+      date: moment().format('LL'),
+      amount: Number(amount)
+      }
+    ])
     setDescription('');
     setAmount('');
 
@@ -53,20 +104,16 @@ const App = () => {
   <Text>Bezier Line Chart</Text>
   <LineChart
     data={{
-      labels: [new Date(),"Tomorrow"],
+      labels: getDates(),
       datasets:[
         {
-          data:[
-            Math.random() * 100,
-            Math.random() * 100,
-          ]
+          data: getAmounts()
         }
       ]
     }}
     width={Dimensions.get("window").width} // from react-native
     height={220}
     yAxisLabel="$"
-    //yAxisSuffix="k"
     yAxisInterval={1} // optional, defaults to 1
     chartConfig={{
       backgroundColor: "#e26a00",
